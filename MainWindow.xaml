@@ -1,0 +1,51 @@
+﻿<mah:MetroWindow x:Class="KittehExpenseTracker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        Title="Expense Tracker" Height="500" Width="900"
+        ResizeMode="NoResize"
+        ShowTitleBar="True"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Left Pane Control Panel-->
+        <Grid Grid.Column="0" Background="#2D2D30">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="1" Text="Total Expenses" FontSize="30" FontWeight="Bold" Foreground="White" Margin="10,10,10,0" Padding="5" HorizontalAlignment="Stretch"></TextBlock>
+                <TextBlock Grid.Row="2" x:Name="TotalExpenses" Text="{Binding TotalExpensesValue, StringFormat=C}" DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}}" FontSize="24" FontWeight="SemiBold" Foreground="Lime" Margin="20,0,20,10" Padding="5" HorizontalAlignment="Stretch"></TextBlock>
+            </Grid>
+
+        </Grid>
+
+        <!--Right Pane Main Content-->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Background="{DynamicResource MahApps.Brushes.Accent}" Padding="10" BorderBrush="#444" BorderThickness="0,0,1,0">
+                <Button x:Name="AddExpenseButton" Content="+ Add Expense" Click="AddExpenseButton_Click" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="5" Margin="0,0,10,0" Background="{DynamicResource MahApps.Brushes.Accent2}" Foreground="White" FontWeight="Bold" BorderThickness="0" Width="120" Height="30"></Button>
+            </Border>
+            <Border Grid.Row="1">
+                <DataGrid x:Name="ExpenseDataGrid" AutoGenerateColumns="True" AlternatingRowBackground="DarkGray" GridLinesVisibility="Horizontal" HeadersVisibility="Column" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RowHeight="35" BorderThickness="0" CanUserAddRows="False" CanUserResizeRows="True" Margin="10" IsReadOnly="True">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Delete entry" Click="DeleteExpense_Click"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
+            </Border>
+        </Grid>
+    </Grid>
+</mah:MetroWindow>
