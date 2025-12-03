@@ -46,12 +46,14 @@ namespace KittehExpenseTracker
 			expenses.Add(new Expense("Rent", 1200.00));
 		}
 
-		private void AddExpenseButton_Click(object sender, RoutedEventArgs e)
+        #region UI Event Handlers
+
+        private void AddExpenseButton_Click(object sender, RoutedEventArgs e)
 		{
 			System.Diagnostics.Debug.WriteLine("[DEBUG] Add Expense Button was clicked. Creating new expense.");
 
 			// Open the AddExpenseWindow dialog
-			AddExpenseWindow addExpenseWindow = new AddExpenseWindow();
+			AddExpenseWindow addExpenseWindow = new();
 			addExpenseWindow.ShowDialog();
 		}
 
@@ -73,19 +75,29 @@ namespace KittehExpenseTracker
 			}
 		}
 
-		public void AddExpense(Expense expense)
-		{
-			expenses.Add(expense);
-		}
+		#endregion
+
+		#region Helper Methods
 
 		private double CalculateTotalExpenses()
 		{
 			return expenses.Sum(expense => expense.Amount);
 		}
 
-		private void OnPropertyChanged(string propertyName)
+        public void AddExpense(Expense expense)
+        {
+            expenses.Add(expense);
+        }
+
+        #endregion
+
+        #region Event Listeners
+
+        private void OnPropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
+
+		#endregion
 	}
 }
