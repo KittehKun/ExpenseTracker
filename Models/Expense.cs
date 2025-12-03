@@ -1,4 +1,4 @@
-﻿namespace KittehExpenseTracker.src.models
+namespace KittehExpenseTracker.Models
 {
     /// <summary>
     /// Represents a financial expense with a title, amount, and optional description.
@@ -9,20 +9,20 @@
     public class Expense
     {
         public string Title { get; private set; }
-		public string? Description { get; private set; }
-		public decimal Amount { get; private set; }
+        public string? Description { get; private set; }
+        public decimal Amount { get; private set; }
 
         public Expense(string title, string? description, decimal amount)
         {
-			Title = title;
-			Description = description;
-			Amount = amount;
+            Title = title;
+            Description = description;
+            Amount = amount;
         }
 
         public Expense(string title, decimal amount)
         {
-			Title = title;
-			Amount = amount;
+            Title = title;
+            Amount = amount;
             Description = null;
         }
     }

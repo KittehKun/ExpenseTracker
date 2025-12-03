@@ -1,18 +1,7 @@
-﻿using KittehExpenseTracker.src.models;
+﻿using KittehExpenseTracker.Models;
 using MahApps.Metro.Controls;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace KittehExpenseTracker
 {
@@ -21,6 +10,8 @@ namespace KittehExpenseTracker
     /// </summary>
     public partial class AddExpenseWindow : MetroWindow
     {
+        public Expense? CreatedExpense { get; private set; }
+
         public AddExpenseWindow()
         {
             InitializeComponent();
@@ -30,24 +21,17 @@ namespace KittehExpenseTracker
 
         private void AddExpenseToMain_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("[AddExpenseToMain] Add Expense Button was clicked. Adding new expense.");
-
-            if (ValidateForm())
+            if (TryCreateExpense(out Expense newExpense))
             {
-                string expenseTitle = ExpenseName.Text;
-                string? expenseDescription = ExpenseDescription.Text;
-                double expenseAmount = Convert.ToDouble(ExpenseAmount.Text);
-
-                Expense newExpense = new(expenseTitle, expenseDescription, expenseAmount);
-                MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
-                mainWindow.AddExpense(newExpense);
-
+                CreatedExpense = newExpense;
+                DialogResult = true;
                 Close();
             }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             Close();
         }
 
@@ -55,20 +39,31 @@ namespace KittehExpenseTracker
 
         #region Helper Methods
 
-        private bool ValidateForm()
+        private bool TryCreateExpense(out Expense expense)
         {
-            if (string.IsNullOrEmpty(ExpenseName.Text) || string.IsNullOrEmpty(ExpenseAmount.Text))
+            expense = null!;
+
+            if (string.IsNullOrWhiteSpace(ExpenseName.Text) || string.IsNullOrWhiteSpace(ExpenseAmount.Text))
             {
                 return false;
             }
 
-            double expenseAmount = Double.TryParse(ExpenseAmount.Text, out expenseAmount) ? expenseAmount : 0;
-            if (expenseAmount <= 0)
+            if (!decimal.TryParse(ExpenseAmount.Text, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal parsedAmount))
             {
                 MessageBox.Show("Please enter a valid amount.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
+            if (parsedAmount <= 0)
+            {
+                MessageBox.Show("Please enter a valid amount.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            string expenseTitle = ExpenseName.Text.Trim();
+            string? expenseDescription = string.IsNullOrWhiteSpace(ExpenseDescription.Text) ? null : ExpenseDescription.Text.Trim();
+
+            expense = new Expense(expenseTitle, expenseDescription, parsedAmount);
             return true;
         }
 
