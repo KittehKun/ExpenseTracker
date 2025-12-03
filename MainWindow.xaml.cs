@@ -40,8 +40,9 @@ namespace KittehExpenseTracker
 				OnPropertyChanged(nameof(TotalExpensesValue));
 			};
 
-			// Add some sample expenses
-			expenses.Add(new Expense("Groceries", 50.00));
+            // Sample data for testing
+            //TODO: Remove sample data once JSON storage is implemented
+            expenses.Add(new Expense("Groceries", 50.00));
 			expenses.Add(new Expense("Entertainment", 100.00));
 			expenses.Add(new Expense("Rent", 1200.00));
 		}

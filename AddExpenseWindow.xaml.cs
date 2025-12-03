@@ -34,7 +34,6 @@ namespace KittehExpenseTracker
 
             if (ValidateForm())
             {
-                // Add expense to the main form
                 string expenseTitle = ExpenseName.Text;
                 string? expenseDescription = ExpenseDescription.Text;
                 double expenseAmount = Convert.ToDouble(ExpenseAmount.Text);
@@ -63,7 +62,6 @@ namespace KittehExpenseTracker
                 return false;
             }
 
-            // Check if the amount is a valid number
             double expenseAmount = Double.TryParse(ExpenseAmount.Text, out expenseAmount) ? expenseAmount : 0;
             if (expenseAmount <= 0)
             {
